@@ -1,0 +1,35 @@
+name "VersionControl"
+version 2.5
+
+move "InstallFinished.ms" to "$temp"
+move "VCReadme.txt" to "$temp"
+move "VCChangelog.txt" to "$temp"
+move "VCRemoveOldMenus.ms" to "$temp"
+
+run "$temp\\VCRemoveOldMenus.ms"
+
+move "Macro_VersionControl.mcr" to "$max\\ui\\macroscripts"
+
+move "CheckIn.ms" to "$max\\scripts\\Lodestone\\VersionControl"
+move "AddNew.ms" to "$max\\scripts\\Lodestone\\VersionControl"
+move "Revert.ms" to "$max\\scripts\\Lodestone\\VersionControl"
+move "View.ms" to "$max\\scripts\\Lodestone\\VersionControl"
+
+move "VersionControl.ini" to "$max\\scripts\\Lodestone\\VersionControl"
+
+move "VersionControl_Menus.ms" to "$max\\stdplugs\\stdscripts"
+move "VersionControlLib.ms" to "$max\\stdplugs\\stdscripts"
+move "LSUtilLib.ms" to "$max\\stdplugs\\stdscripts"
+
+move "Lodestone.bmp" to "$max\\ui\\icons"
+move "QMark_a.bmp" to "$max\\ui\\icons"
+move "QMark_i.bmp" to "$max\\ui\\icons"
+
+run "$max\\stdplugs\\stdscripts\\VersionControlLib.ms"
+run "$max\\stdplugs\\stdscripts\\LSUtilLib.ms"
+run "$max\\ui\\macroscripts\\Macro_VersionControl.mcr"
+run "$max\\stdplugs\\stdscripts\\VersionControl_Menus.ms"
+
+run "$temp\\InstallFinished.ms"
+
+clear temp
