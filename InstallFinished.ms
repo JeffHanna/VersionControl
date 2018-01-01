@@ -49,6 +49,9 @@
 			destroyDialog rltFinished
 		)
 	)
+	
+	setINISetting ((getDir #userscripts) + "\\..\\Plugin.UserSettings.ini") "Directories" "Lodestone plug-ins" ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs")
+	macros.load()
 
 	createDialog rltFinished 312 112 modal:true
 )

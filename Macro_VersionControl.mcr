@@ -30,7 +30,7 @@ macroscript AddNew
 		
 		on execute do
 		(
-			include "$scripts\\Lodestone\\VersionControl\\AddNew.ms"
+			include "$userscripts\\Lodestone\\VersionControl\\AddNew.ms"
 		)
 	)
 
@@ -45,7 +45,7 @@ macroscript CheckIn
 
 		on execute do
 		(
-			include "$scripts\\Lodestone\\VersionControl\\CheckIn.ms"
+			include "$userscripts\\Lodestone\\VersionControl\\CheckIn.ms"
 		)
 	)
 
@@ -60,7 +60,7 @@ macroscript Revert
 
 		on execute do
 		(
-			include "$scripts\\Lodestone\\VersionControl\\Revert.ms"
+			include "$userscripts\\Lodestone\\VersionControl\\Revert.ms"
 		)
 	)
 
@@ -75,7 +75,7 @@ macroscript View
 		
 		on execute do
 		(
-			include "$scripts\\Lodestone\\VersionControl\\View.ms"
+			include "$userscripts\\Lodestone\\VersionControl\\View.ms"
 		)
 	)
 	
@@ -172,9 +172,9 @@ macroscript VersionControl_Options
 				bVCEnableReset = rltVCOptions.chkVCEnableReset.state
 				bVCEditTextures = rltVCOptions.chkVCEditTextures.state
 				
-				setINISetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Show Results" (bVCShowResults as string)
-				setINISetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Enable Reset" (bVCEnableReset as string)
-				setINISetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Edit Textures" (bVCEditTextures as string)
+				setINISetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" (bVCShowResults as string)
+				setINISetting "$plugcfg\\VersionControl.ini" "Options" "Enable Reset" (bVCEnableReset as string)
+				setINISetting "$plugcfg\\VersionControl.ini" "Options" "Edit Textures" (bVCEditTextures as string)
 				
 				destroyDialog rltVCOptions
 			)

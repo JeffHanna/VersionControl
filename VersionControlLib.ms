@@ -233,7 +233,7 @@
 	(
 		DOSCOmmand ("p4 info" + " > %temp%\VCClientInfo.txt")
 		local FileIn = openFile "$temp\\VCClientInfo.txt" mode:"r"
-		if skipToString FileIn "User name: " != undefined then
+		if FileIn != undefined and skipToString FileIn "User name: " != undefined then
 		(
 			local strName = readLine FileIn
 			return strName
@@ -730,9 +730,9 @@
 		-- Read the user stored setting for whether the command results should be displayed or not.
 		case of
 		(
-			(getINIsetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Show Results" == "true"): bVCShowResults = true
-			(getINIsetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Show Results" == "false"): bVCShowResults = false
-			(getINIsetting "$scripts\\Lodestone\\VersionControl\\VersionControl.ini" "Options" "Show Results" == ""): bVCShowResults = true
+			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "true"): bVCShowResults = true
+			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "false"): bVCShowResults = false
+			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == ""): bVCShowResults = true
 		)
 	
 		-- Remove the LastCommand file since this is a new Max session

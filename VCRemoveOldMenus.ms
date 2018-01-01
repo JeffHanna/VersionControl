@@ -5,7 +5,7 @@
 	iFileMenuCount = FileMenu.numItems()
 	
 	-- Save current Menu file for backup purposes
-	menuMan.saveMenuFile "VCBackup.mnu"
+	menuMan.saveMenuFile "VCBackup.mnux"
 	
 	-- Delete the "Version Control" menu
 	bExit = false

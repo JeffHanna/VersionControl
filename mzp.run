@@ -1,35 +1,33 @@
 name "VersionControl"
-version 2.5
+version 2.51
 
-move "InstallFinished.ms" to "$temp"
-move "VCReadme.txt" to "$temp"
-move "VCChangelog.txt" to "$temp"
-move "VCRemoveOldMenus.ms" to "$temp"
 
-run "$temp\\VCRemoveOldMenus.ms"
+run VCRemoveOldMenus.ms
+drop VCRemoveOldMenus.ms
 
-move "Macro_VersionControl.mcr" to "$max\\ui\\macroscripts"
+move Macro_VersionControl.mcr to $usermacros
 
-move "CheckIn.ms" to "$max\\scripts\\Lodestone\\VersionControl"
-move "AddNew.ms" to "$max\\scripts\\Lodestone\\VersionControl"
-move "Revert.ms" to "$max\\scripts\\Lodestone\\VersionControl"
-move "View.ms" to "$max\\scripts\\Lodestone\\VersionControl"
+move CheckIn.ms to $userscripts\\Lodestone\\VersionControl
+move AddNew.ms to $userscripts\\Lodestone\\VersionControl
+move Revert.ms to $userscripts\\Lodestone\\VersionControl
+move View.ms to $userscripts\\Lodestone\\VersionControl
 
-move "VersionControl.ini" to "$max\\scripts\\Lodestone\\VersionControl"
+move VersionControl.ini to $plugcfg
 
-move "VersionControl_Menus.ms" to "$max\\stdplugs\\stdscripts"
-move "VersionControlLib.ms" to "$max\\stdplugs\\stdscripts"
-move "LSUtilLib.ms" to "$max\\stdplugs\\stdscripts"
+move VersionControlLib.ms to $userscripts\Lodestone\VersionControl\libs
+move LSUtilLib.ms to $userscripts\Lodestone\VersionControl\libs
 
-move "Lodestone.bmp" to "$max\\ui\\icons"
-move "QMark_a.bmp" to "$max\\ui\\icons"
-move "QMark_i.bmp" to "$max\\ui\\icons"
+move "*.bmp" to $usericons
 
-run "$max\\stdplugs\\stdscripts\\VersionControlLib.ms"
-run "$max\\stdplugs\\stdscripts\\LSUtilLib.ms"
-run "$max\\ui\\macroscripts\\Macro_VersionControl.mcr"
-run "$max\\stdplugs\\stdscripts\\VersionControl_Menus.ms"
+run $userscripts\\Lodestone\\VersionControl\\libs\\VersionControlLib.ms
+run $userscripts\\Lodestone\\VersionControl\\libs\\LSUtilLib.ms
+drop $userscripts\\Lodestone\\VersionControl\\libs\\VersionControlLib.ms
+drop $userscripts\\Lodestone\\VersionControl\\libs\\LSUtilLib.ms
 
-run "$temp\\InstallFinished.ms"
+run VersionControl_Menus.ms
+drop VersionControl_Menus.ms
+
+run InstallFinished.ms
+drop InstallFinished.ms
 
 clear temp
