@@ -99,11 +99,11 @@ macroscript LastCommand
 
 macroscript LaunchP4Win
 	category:"Lodestone Tools"
-	buttontext:"Launch P4Win"
-	tooltip:"Launch P4Win"
+	buttontext:"Launch P4V"
+	tooltip:"Launch P4V"
 	
 	(
-		shellLaunch "p4win" ""
+		shellLaunch "p4v" ""
 	) -- end of LaunchP4Win
 	
 	
