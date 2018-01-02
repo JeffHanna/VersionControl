@@ -127,5 +127,8 @@
 
 		-- Redraw the menu bar with the new items
 		menuMan.updateMenuBar()
+	) else (
+		messageBox "Whoops!"
 	)
+	messageBox "Done"
 )

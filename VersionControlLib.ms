@@ -184,20 +184,20 @@
 	-- the user name. That data may be necessary in the future.
 	fn VCGetFileStats strMaxSceneFile =
 	(
-		DOSCommand ("p4 fstat " + strMaxSceneFile + " > %temp%\VCFstat.txt")
-		local fileIn = openFile "$temp\\VCFstat.txt" mode:"r"
+		HiddenDOSCommand ("p4 fstat " + strMaxSceneFile + " > \"" + (getDir #temp) + "\\VCFstat.txt\"")
+		local f = openFile "$temp\\VCFstat.txt" mode:"r"
 		
-		if skipToString fileIn "actionOwner " != undefined then
+		if skipToString f "actionOwner " != undefined then
 		(
-			local strActionOwner = readLine fileIn
+			local strActionOwner = readLine f
 			return strActionOwner
 		)
 		else
 		(
-			seek fileIn 0
-			if skipToString fileIn "otherOpen0 " != undefined then
+			seek f 0
+			if skipToString f "otherOpen0 " != undefined then
 			(
-				local strOtherOwner = readDelimitedString fileIn "@"
+				local strOtherOwner = readDelimitedString f "@"
 				return strOtherOwner
 			)
 			else
@@ -205,16 +205,16 @@
 				return ""
 			)
 		)
-		close fileIn
+		close f
 	)	
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	--
 	fn VCFstatExists strMaxSceneFile =
 	(
-		DOSCommand ("p4 fstat " + strMaxSceneFile + " > %temp%\VCFstat.txt")
-		local fileIn = openFile "$temp\\VCFstat.txt" mode:"r"
-		if skipTostring fileIn "..." != undefined then
+		HiddenDOSCommand ("p4 fstat " + strMaxSceneFile + " > \"" + (getdir #temp) + "\\VCFstat.txt\"")
+		local f = openFile "$temp\\VCFstat.txt" mode:"r"
+		if skipTostring f "..." != undefined then
 		(
 			return true
 		)
@@ -222,7 +222,7 @@
 		(
 			return false
 		)
-		close fileIn
+		close f
 	)	
 	-------------------------------------------------------------------------------------------------------------------------
 	
@@ -231,13 +231,13 @@
 	-- That extra information might be used by the Version Control scripts in the future.
 	fn VCGetClientInfo =
 	(
-		DOSCOmmand ("p4 info" + " > %temp%\VCClientInfo.txt")
-		local FileIn = openFile "$temp\\VCClientInfo.txt" mode:"r"
-		if FileIn != undefined and skipToString FileIn "User name: " != undefined then
+		HiddenDOSCommand ("p4 info > \"" + (getdir #temp) + "\\VCClientInfo.txt\"")
+		local f = openFile "$temp\\VCClientInfo.txt" mode:"r"
+		if f != undefined and skipToString f "User name: " != undefined then
 		(
-			local strName = readLine FileIn
+			local strName = readLine f
 			return strName
-			close FileIn
+			close f
 		)
 	)	
 	-------------------------------------------------------------------------------------------------------------------------
@@ -245,7 +245,7 @@
 	-- Pass a list of requested files to the source control system so they can be sync'd to their latest versions and opened for edit.
 	fn VCSync aFilesToCheck bCheckOut =
 	(
-		local bmpQMark = openBitmap "$max\\ui\\icons\\QMark.bmp"
+		local bmpQMark = openBitmap "$usericons\\QMark.bmp"
 		local bStopFileCheck = false	-- A boolean variable to control the do/while loop for texture sync'ing
 		local aFilesToSync = #()		-- Local array to hold items that need to be sync'ed to the latest rev.
 
@@ -304,12 +304,12 @@
 			for i in aFilesToCheck do
 			(
 				-- Do a report only sync on the file to see if it is the latest revision. Then read the piped output in.
-				DOSCommand ("p4 sync -n " + i + " > %temp%\\VCSyncCheck.txt")
-				local FileIn = openFile "$temp\\VCSyncCheck.txt" mode:"r"
+				HiddenDOSCommand ("p4 sync -n " + i + " > \"" + (getDir #temp) + "\\VCSyncCheck.txt\"")
+				local f = openFile "$temp\\VCSyncCheck.txt" mode:"r"
 
 				-- If the output contains the word "updating" then the file is not the latest revision.
 				-- Ask the user if they would like to sync to the latest rev.
-				if skipToString FileIn "updating" != undefined then
+				if skipToString f "updating" != undefined then
 				(
 					bDoSync = querybox ("You do not have the latest version of " + (filenameFromPath i) + " on your machine.\nDo you want to sync to the latest version?") title:"Version Control"
 					if bDoSync == true then
@@ -323,13 +323,13 @@
 				-- Add it to the files to sync so it will be put in the user's depot and checked out.
 				else
 				(
-					seek FileIn 0
-					if skipToString FileIn "added" != undefined then
+					seek f 0
+					if skipToString f "added" != undefined then
 					(
 						append aFilesToSync i
 					)
 				)
-				close FileIn
+				close f
 			)
 		)
 		-- If the array as > 1 elements in it, it is the array of textures.
@@ -341,12 +341,12 @@
 				for i = 1 to aFilesToCheck.count do
 				(
 					-- Do a report only sync on the file to see if it is the latest revision. Then read the piped output in.
-					DOSCommand ("p4 sync -n " + aFilesToCheck[i] + " > %temp%\\VCSyncCheck.txt")
-					local FileIn = openFile "$temp\\VCSyncCheck.txt" mode:"r"
+					HiddenDOSCommand ("p4 sync -n " + aFilesToCheck[i] + " > \"" + (getdir #temp) + "\\VCSyncCheck.txt\"")
+					local f = openFile "$temp\\VCSyncCheck.txt" mode:"r"
 
 					-- If the output contains the word "updating" then the file is not the latest revision.
 					-- Ask the user if they would like to sync to the latest rev. for individual or textures.
-					if skipToString FileIn "updating" != undefined then
+					if skipToString f "updating" != undefined then
 					(
 						strLabel = ("You do not have the latest version of " + (filenameFromPath aFilesToCheck[i]) + "\non your machine. Do you want to sync to the latest version?")
 						queryAllBox.lblString.text = strLabel
@@ -358,7 +358,7 @@
 							-- User clicks "Yes"
 							1:	(
 									append aFilesToSync aFilesToCheck[i]
-									close FileIn
+									close f
 								)
 							-- User clicks "Yes to All"
 							2:	(
@@ -366,17 +366,17 @@
 									(
 										append aFilesToSync aFilesToCheck[j]
 									)
-									close FileIn
+									close f
 									bStopFileCheck = true
 									exit
 								)
 							-- User clicks "No"
 							3:	(
-									close FileIn
+									close f
 								)
 							-- User clicks "No to All"
 							4:	(
-									close FileIn
+									close f
 									bStopFileCheck = true
 									exit
 								)
@@ -388,12 +388,12 @@
 					-- Add it to the files to sync so it will be put in the user's depot and checked out.
 					else
 					(
-						seek FileIn 0
-						if skipToString FileIn "added" != undefined then
+						seek f 0
+						if skipToString f "added" != undefined then
 						(
 							append aFilesToSync aFilesToCheck[i]
 						)
-						close FileIn
+						close f
 					)
 
 					-- Check each iteration through the loop to see if we're at the last element in the array.
@@ -412,14 +412,14 @@
 		(
 			WriteFile aFilesToSync "$temp\\TempSync.txt" --strTextFile
 			strDOSEditFile = DOSTempPath "$temp\\TempSync.txt" 1 5
-			DOSCommand ("p4 -x " + strDOSEditFile + " sync > %temp%\\VCSync.txt")
+			HiddenDOSCommand ("p4 -x " + strDOSEditFile + " sync > \"" + (getDir #temp) + "\\VCSync.txt\"")
 		)
 
 		if bCheckOut == true then
 		(
 			WriteFile aFilesToCheck "$temp\\TempSync.txt" --strTextFile
 			strDOSEditFile = DOSTempPath "$temp\\TempSync.txt" 1 5
-			DOSCommand ("p4 -x " + strDOSEditFile + " edit > %temp%\\VCEdit.txt")
+			HiddenDOSCommand ("p4 -x " + strDOSEditFile + " edit > \"" + (getDir #temp) + "\\VCEdit.txt\"")
 		)
 	)
 	-------------------------------------------------------------------------------------------------------------------------
@@ -430,7 +430,7 @@
 		WriteFile aFilesToAdd strAddFile
 
 		strDOSAddFile = DOSTempPath strAddFile 1 5
-		DOSCommand ("P4 -x " + strDOSAddFile + " add -t binary+l > %temp%\\VCAdd.txt")
+		HiddenDOSCommand ("P4 -x " + strDOSAddFile + " add -t binary+l > \"" + (getDir #temp) + "\\VCAdd.txt\"")
 	)
 	-------------------------------------------------------------------------------------------------------------------------
 
@@ -441,7 +441,7 @@
 		WriteFile aFilesToRevert strRevertFile
 
 		strDOSRevertFile = DOSTempPath strRevertFile 1 5
-		DOSCommand ("P4 -x " + strDOSRevertFile + " revert -a > %temp%\\VCRevert.txt")
+		HiddenDOSCommand ("P4 -x " + strDOSRevertFile + " revert -a > \"" + (getdir #temp) + "\\VCRevert.txt\"")
 	)
 	-------------------------------------------------------------------------------------------------------------------------
 
@@ -452,7 +452,7 @@
 
 		strDOSRevertFile = DOSTempPath strRevertFile 1 5
 
-		DOSCommand ("P4 -x " + strDOSRevertFile + " revert > %temp%\\VCRevert.txt")
+		HiddenDOSCommand ("P4 -x " + strDOSRevertFile + " revert > \"" + (getDir #temp) + "\\VCRevert.txt\"")
 	)
 	-------------------------------------------------------------------------------------------------------------------------
 
@@ -465,11 +465,11 @@
 		
 		if bAndReOpen == true then
 		(
-			DOSCommand ("type " + strDOSSubmitFile + " | p4 submit -i -r > %temp%\\VCSubmit.txt")
+			HiddenDOSCommand ("type " + strDOSSubmitFile + " | p4 submit -i -r > \"" + (getDir #temp) + "\\VCSubmit.txt\"")
 		)
 		else
 		(
-			DOSCommand ("type " + strDOSSubmitFile + " | p4 submit -i > %temp%\\VCSubmit.txt")
+			HiddenDOSCommand ("type " + strDOSSubmitFile + " | p4 submit -i > \"" + (getDir #temp) + "\\VCSubmit.txt\"")
 		)
 	)
 	-------------------------------------------------------------------------------------------------------------------------
@@ -481,12 +481,12 @@
 	(
 		local aReturnArray = #()
 
-		DOSCommand ("P4 opened > %temp%\OpenedFiles.txt")
+		HiddenDOSCommand ("P4 opened > \"" + (getDir #temp) + "\\OpenedFiles.txt\"")
 
-		local FileIn = openFile strOpenedFiles
-		while not eof FileIn do
+		local f = openFile strOpenedFiles
+		while not eof f do
 		(
-			local strTextLine = (readLine FileIn) as string
+			local strTextLine = (readLine f) as string
 			aOpenedFiles = filterString strTextLine "#"
 
 			for i in aOpenedFiles do
@@ -499,7 +499,7 @@
 				)
 			)
 		)
-		close FileIn
+		close f
 		deleteFile "$temp\\OpenedFiles.txt"
 		return aReturnArray
 	)
@@ -725,7 +725,8 @@
 	if strUserName != undefined then
 	(
 		-- Print version information to the listener. Useful if a bug-report needs to be sent.
-		print ("VersionControlLib.ms, v" + strVersion + " loaded.")
+		format "VersionControlLib.ms, v% loaded.\n" strVersion to:Listener
+		print "Test"
 	
 		-- Read the user stored setting for whether the command results should be displayed or not.
 		case of

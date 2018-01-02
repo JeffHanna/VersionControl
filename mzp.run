@@ -14,8 +14,8 @@ move View.ms to $userscripts\\Lodestone\\VersionControl
 
 move VersionControl.ini to $plugcfg
 
-move VersionControlLib.ms to $userscripts\Lodestone\VersionControl\libs
-move LSUtilLib.ms to $userscripts\Lodestone\VersionControl\libs
+move VersionControlLib.ms to $userscripts\\Lodestone\\VersionControl\\libs
+move LSUtilLib.ms to $userscripts\\Lodestone\\VersionControl\\libs
 
 move "*.bmp" to $usericons
 

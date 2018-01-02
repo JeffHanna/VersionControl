@@ -508,7 +508,7 @@
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- print version information to the listener. Useful if a bug-report needs to be sent.
-	print ("LSUtilLib, v" + strLSULVersion + " loaded.")
+	format "LSUtilLib, v% loaded.\n" strLSULVersion to:Listener
 )
 
 

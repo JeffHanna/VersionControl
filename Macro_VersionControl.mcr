@@ -126,7 +126,7 @@ macroscript VersionControl_About
 	(
 		rollout rltAbout "About" width:320 height:170
 		(
-			bitmap bmpLodestone "" pos:[8,8] width:100 height:100 fileName:"$ui\\icons\\Lodestone.bmp"
+			bitmap bmpLodestone "" pos:[8,8] width:100 height:100 fileName:"$usericons\\Lodestone.bmp"
 
 			label lblAboutVersion "version 2.51" pos:[120,24] width:64 height:16
 			label lblAboutTitle "Version Control Scripts" pos:[120,8] width:164 height:16
