@@ -1,7 +1,7 @@
 3DSMax Version Control Scripts
 
-Version: 		2.5
-Release Date:	August 20, 2003 
+Version: 		2.52
+Release Date:	January 03, 2018
 Author:		Jeff Hanna (Art Director, Lodestone Games, LLC)
 
 All scripts in this package are © copyright 2003, Lodestone Games, LLC. All Rights Reserved.
@@ -10,6 +10,10 @@ All scripts in this package are © copyright 2003, Lodestone Games, LLC. All Righ
 An interface between 3DSMax and the Perforce version control system
 
 This package works in Max 4.x and Max 5.x
+
+
+New in Version 2.52
+* Updated to install and work correclty in newer versions of 3ds Max. Tested on 3ds Max 2016, 2017, and 2018.
 
 
 New in Version 2.5

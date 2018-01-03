@@ -1,72 +1,32 @@
 /*
 	LSUtilLib.ms
-	Version: 1.51
+	Version: 1.52
 	Created On: December 05, 2002
 	Created By: Jeff Hanna
-	Modified On: March 12, 2003
+	Modified On: January 03, 2018
 	Modified By: Jeff Hanna
-	tested using Max 4.26
+	tested using 3ds Max 2016
 
 	
+	v1.52	- Removed RemoveDuplicates() and changed all append() calls to appendIfUnique()
+	
 	v1.51 - Renamed variables to match programming guidelines.
-	        Removed the strStartMapsFile and strFileToOpen variables. They weren't used in this script.
-	v1.5 - Added the GeometryFilter and GetSelectionBoundingBox functions. 
-	       Commented out the strStartMapsFile and strFileToOpen variable declarations. They are P4Lib.ms variables. Why are they being delcared here?
-	v1.4 - Reworked functions to standardized programming conventions.
-		   Changed DOSTempPath function to take start and end character locations as input variables.
-	v1.3 - Added CompareFileDates function
-	v1.2 - Renamed the function "ConvertArrays" to "ConvertArray" since it only works on one array at a time.
-	v1.1 - Initial release.
+				Removed the strStartMapsFile and strFileToOpen variables. They weren't used in this script.
+	v1.5	- Added the LSUtilLib.GeometryFilter and LSUtilLib.GetSelectionBoundingBox functions. 
+				Commented out the strStartMapsFile and strFileToOpen variable declarations. They are P4Lib.ms variables. Why are they being delcared here?
+	v1.4	- Reworked functions to standardized programming conventions.
+				Changed LSUtilLib.DOSTempPath function to take start and end character locations as input variables.
+	v1.3	- Added LSUtilLib.CompareFileDates function
+	v1.2	- Renamed the function "ConvertArrays" to "ConvertArray" since it only works on one array at a time.
+	v1.1	- Initial release.
 	
 */
 
+struct LSUtilLib_Base
 (
---LOCAL VARIABLES
-------------------
-	local strLSULVersion = "1.51" as string
-	
-	
---GLOBAL VARIABLES
-------------------
+	strLSULVersion = "1.52",
 		
-	
---GLOBAL FUNCTIONS
-------------------
-	global GetUsedMapPaths
-	global GetNewMapPaths
-	global ConvertArrayDOS2Unix
-	global RemoveDuplicates
-	global WriteFile
-	global MakeRelativePath
-	global DOSTempPath
-	global GetSceneMaps
-	global GetSceneMaterials
-	global GetAllMaterials
-	global GetSubMaterials
-	global GetMapsFromMaterial
-	global GetOtherMaps
-	global GetBitmapsFromMaps
-	global CompareFileDates
-	global GeometryFilter
-	global GetSelectionBoundingBox
-
 		
---ARRAY MANIPULATION FUNCTIONS
------------------------------------
-	-- Checks the input array for duplicate entries. Removes any duplicates found.
-	fn RemoveDuplicates aInput =
-	(
-		for j in aInput.count to 1 by -1 do 
-		(
-			local iIndex = findItem aInput aInput[j]
-			if (iIndex != 0) and (iIndex != j) do 
-				(
-					deleteItem aInput j
-				)
-		)
-	)
-	-------------------------------------------------------------------------------------------------------------------------
-	
 	-- Performs a simple alphabetic check on two file names. Returns a value indicating which one is 
 	-- closer to A in the alphabet (e.g. A_File.text is higher than File.text)
 	fn NameCompare strName1 strName2 = 
@@ -83,12 +43,12 @@
 		(
 			return 0
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	
---FILE MANIPULATION FUNCTIONS
----------------------------------
+	--FILE MANIPULATION FUNCTIONS
+	---------------------------------
 	-- Takes an array of items and a file path name.
 	-- Writes the list of items in the array to the file on disk.
 	fn WriteFile aInput strFilePath =
@@ -100,7 +60,7 @@
 			format "%\n" i to:FileOut
 		)
 		close FileOut
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------		
 		
 	-- Takes two file paths and checks to see if they point to files of the same name.
@@ -172,12 +132,12 @@
 				)
 			)		
 			return iResult
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 		
 	
---PATH MANIPULATION FUNCTIONS
-----------------------------------
+	--PATH MANIPULATION FUNCTIONS
+	----------------------------------
 	-- Convert the array's elements from DOS based absolute pathing to Unix based relative pathing.
 	fn ConvertArrayDOS2Unix aInput =
 	(
@@ -185,7 +145,7 @@
 		
 		for i in aInput do
 		(
-			i = MakeRelativePath i
+			i = LSUtilLib.MakeRelativePath i
 			aPathPieces = filterString i "\\"
 			
 			local UnixPath = stringStream ""
@@ -201,17 +161,17 @@
 			)
 			close UnixPath
 			strUnixPath = UnixPath as string
-			append aReturn strUnixPath
+			appendIfUnique aReturn strUnixPath
 		)
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Changes C:\ absolute pathing to \\ relative pathing
 	fn MakeRelativePath strInputPath  =
 	(
 		replace strInputPath 1 2 "\\"
-	)	
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	
@@ -220,12 +180,12 @@
 	fn DOSTempPath strInputPath iStartCharacter iEndCharacter =
 	(
 		replace strInputPath iStartCharacter iEndCharacter "%temp%"
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 		
 	
---MATERIAL TREE FUNCTIONS
-----------------------------
+	--MATERIAL TREE FUNCTIONS
+	----------------------------
 	--Scan the scene to find all Map assignments within it.
 	fn GetSceneMaps =
 	(
@@ -233,21 +193,21 @@
 		local aReturn = #()
 		aTempMap = #()
 		
-		aSceneMaterials = GetSceneMaterials()
+		aSceneMaterials = LSUtilLib.GetSceneMaterials()
 		
 		for i in aSceneMaterials do
 		(
 			aTempMaps = #()
 			
-			GetMapsFromMaterial i aTempMaps
+			LSUtilLib.GetMapsFromMaterial i aTempMaps
 			
 			join aReturn aTempMaps
 		)
 		
-		qSort aReturn NameCompare
+		qSort aReturn LSUtilLib.NameCompare
 		
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	--Scan the scene to find all material assignments within it.
@@ -260,21 +220,21 @@
 		(
 			if i.material != undefined then
 			(
-				for i in (GetAllMaterials i.material) do
+				for i in (LSUtilLib.GetAllMaterials i.material) do
 				(
 					iIndex = findItem aReturn i
 					if iIndex == 0 then
 					(
-						append aReturn i
+						appendIfUnique aReturn i
 					)
 				)
 			)
 		) 		
 		
-		qSort aReturn NameCompare
+		qSort aReturn LSUtilLib.NameCompare
 		
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Find all materials and multi-sub materials within a given assigned scene material.
@@ -283,20 +243,20 @@
 		aReturn = #()
 		aTempMaterials = #()
 		
-		append aReturn InputMaterial
+		appendIfUnique aReturn InputMaterial
 		
-		GetSubMaterials InputMaterial aTempMaterials
+		LSUtilLib.GetSubMaterials InputMaterial aTempMaterials
 		
 		for i in aTempMaterials do
 		(
 			if findItem aReturn i == 0 then
 			(
-				append aReturn i
+				appendIfUnique aReturn i
 			)
 		)
 		
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- If the InputMaterial array has multi-sub materials then scan them for material entries.
@@ -316,7 +276,7 @@
 							(
 								if findItem aInput (InputMaterial[i].object) == 0 then
 								(
-									append aInput (InputMaterial[i].object)
+									appendIfUnique aInput (InputMaterial[i].object)
 								)
 							)
 						)
@@ -325,15 +285,15 @@
 						(
 							if findItem aInput InputMaterial[i] == 0 then
 							(
-								append aInput InputMaterial[i]
+								appendIfUnique aInput InputMaterial[i]
 							)
 						)
 					)
-					GetSubMaterials InputMaterial[i] aInput
+					LSUtilLib.GetSubMaterials InputMaterial[i] aInput
 				)
 			)
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Find all maps in the inputted materials.
@@ -351,15 +311,15 @@
 						(
 							if InputMaterial[i].object != undefined then
 							(
-								append aInput InputMaterial[i].object
+								appendIfUnique aInput InputMaterial[i].object
 							)
 						)
 					)
-					GetMapsFromMaterial InputMaterial[i] aInput
+					LSUtilLib.GetMapsFromMaterial InputMaterial[i] aInput
 				)
 			)
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Scan the lights in the scene for projector map bitmaps.
@@ -382,18 +342,18 @@
 				(
 					if i.projectorMap != undefined then
 					(
-						append aReturn i.projetorMap
+						appendIfUnique aReturn i.projetorMap
 					)
 					
 					if i.shadowProjectorMap != undefined then
 					(
-						append aReturn i.shadowProjectorMap
+						appendIfUnique aReturn i.shadowProjectorMap
 					)
 				)
 			)
 		)
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- From the input array of maps gather all of the bitmap filepaths.
@@ -405,16 +365,16 @@
 		(
 			if classOf i == Bitmaptexture then
 			(
-				append aReturn i.filename
+				appendIfUnique aReturn i.filename
 			)
 		)
 		return aReturn
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------		
 	
 	
---BITMAP PATH FUNCTIONS
---------------------------
+	--BITMAP PATH FUNCTIONS
+	--------------------------
 	-- Enumerate all bitmaps in the scene. If the gathered bitmap isn't in the array of stored bitmaps, add it.
 	-- DEPRECATED DUE TO THE FACT THAT IT DOESN'T ALWAYS GATHER ALL BITMAPS IN THE SCENE.
 	fn GetUsedMapPaths strMapPathname =
@@ -423,9 +383,9 @@
 		StartMapPathnames = #()
 		if iIndex == 0 do
 		(
-			append StartMapPathnames strMapPathname
+			appendIfUnique StartMapPathnames strMapPathname
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Compare the list of current maps against the array of original maps to see if any new ones were added to the Max scene.
@@ -435,19 +395,19 @@
 		local iIndex = findItem StartMapPathnames strNewPathname
 		if iIndex == 0 do
 		(
-			append NewPathnames strNewPathname
+			appendIfUnique NewPathnames strNewPathname
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	
---GEOMETRY FUNCTIONS
-------------------------
+	--GEOMETRY FUNCTIONS
+	------------------------
 	-- Pickbutton filter that tests the potential pick object to ensure that it is valid geometry.
 	fn GeometryFilter InputObject =
 	(
 		superClassOf InputObject == GeometryClass
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Takes the current selected objects, puts them into an array, then calculates the bounding volume for all of the objects.
@@ -504,11 +464,17 @@
 			
 			return #(point3Min, point3Max)
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
+		
 	
-	-- print version information to the listener. Useful if a bug-report needs to be sent.
-	format "LSUtilLib, v% loaded.\n" strLSULVersion to:Listener
+	fn init = 
+	(
+		-- print version information to the listener. Useful if a bug-report needs to be sent.
+		format "LSUtilLib v% loaded.\n" strLSULVersion to:Listener
+	)
 )
 
 
+LSUtilLib = LSUtilLib_Base()
+LSUtilLib.init()

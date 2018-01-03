@@ -1,4 +1,4 @@
-Version Control Changelog (v2.32)
+Version Control Changelog
 
 
 VersionControl_Menus.ms
@@ -16,131 +16,145 @@ VersionControl_Menus.ms
 
 
 AddNew.ms
-	v2.5 - Added checking for the bVCEnableReset variable to control if the scene is reset or not.
-	
-	v2.4 - Dead development tree, version number skipped.
-	v2.31 - Fixed the "ReOpen" code to work properly.
-	v2.3 - Changed from using the persistent global variables to using P4 fstat to check if the file exists.
-			Now ghosts any menu commands that are not proper after this script has finished.
-	v2.2 - Changed all VCSubmitAndReOpen() function calls to VCSubmit() function calls to reflect changes in VersionControlLib.ms
-			Changed all VCSyncAndCheckOut() function calls to VCSync() function calls to reflect changes in VersionControlLib.ms
-			Removed the local aMaxVersion array. The script now uses the global version of that array.
-	v2.1 - Added a section to switch the menu ghost variables to false when the file is added.
-			Removed the Max4/Max5 codepaths for bitmap discovery. Max 5's function doesn't work as well as my code.
-	v2.0 - Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the AddNew to the user.
-			Removed the two included library files. All functions are now made global when those two files are loaded at startup.
-			(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been added.
-			(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
-			do the same thing. That code is still used if the scripts are run on Max 4.
-	v1.71 - Changed variable names to follow the programming guidelines.
-	v1.7 - Changed name from "SaveAsToSourceControl" to "AddNew". All "Source Control" and "SC" references changed to "Version Control
-	       and "VC".  Changed function call "ConvertArray" to "ConvertArrayDOS2Unix" to reflect the change made in LSUtilLib
-	v1.6 - Fixed a bug with a misnamed variable that was breaking the script.
-	v1.5 - Copyright information added.
-	v1.4 - Switched from storing strMaxFileToEdit and strStartMapsFile in the FileProperties page to storing them in the persistent
-	       global variables, "pg_strMaxFilepath" and, "pg_strMapsFilepath".
-	v1.3 - Changed the function call "ConvertArrays" to "ConvertArray" to reflect the change made in LSUtilLb.
-	v1.2 - Initial release.
+	v2.52	- Updated so the VC* calls to global functions are now VersionControlLib.VC* calls
+				as that library has properly been made a struct with local functions.
+			
+	v2.51	- Fixed variable scope on the rltGetDescription dialog. Improper scope was causing the scripts to break on Max 4.2x.	
+	v2.5	- Added checking for the bVCEnableReset variable to control if the scene is reset or not.
+	v2.4	- Dead development tree, version number skipped.
+	v2.31	- Fixed the "ReOpen" code to work properly.
+	v2.3	- Changed from using the persistent global variables to using P4 fstat to check if the file exists.
+				Now ghosts any menu commands that are not proper after this script has finished.
+	v2.2	- Changed all VCSubmitAndReOpen() function calls to VCSubmit() function calls to reflect changes in VersionControlLib.ms
+				Changed all VCSyncAndCheckOut() function calls to VCSync() function calls to reflect changes in VersionControlLib.ms
+				Removed the local aMaxVersion array. The script now uses the global version of that array.
+	v2.1	- Added a section to switch the menu ghost variables to false when the file is added.
+				Removed the Max4/Max5 codepaths for bitmap discovery. Max 5's function doesn't work as well as my code.
+	v2.0	- Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the AddNew to the user.
+				Removed the two included library files. All functions are now made global when those two files are loaded at startup.
+				(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been added.
+				(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
+				do the same thing. That code is still used if the scripts are run on Max 4.
+	v1.71	- Changed variable names to follow the programming guidelines.
+	v1.7	- Changed name from "SaveAsToSourceControl" to "AddNew". All "Source Control" and "SC" references changed to "Version Control
+				and "VC".  Changed function call "ConvertArray" to "LSUtilLib.ConvertArrayDOS2Unix" to reflect the change made in LSUtilLib
+	v1.6	- Fixed a bug with a misnamed variable that was breaking the script.
+	v1.5	- Copyright information added.
+	v1.4	- Switched from storing strMaxFileToEdit and strStartMapsFile in the FileProperties page to storing them in the persistent
+				global variables, "pg_strMaxFilepath" and, "pg_strMapsFilepath".
+	v1.3	- Changed the function call "ConvertArrays" to "ConvertArray" to reflect the change made in LSUtilLb.
+	v1.2	- Initial release.
 
 
 CheckIn.ms
-	v2.5 - Added checking the bVCEnableReset to control whether max is reset after a check in.
+	v2.52 - Updated so the VC* calls to global functions are now VersionControlLib.VC* calls 
+				as that library has properly been made a struct with local functions.
 	
-	v2.4 - Dead development tree, version number skipped.
+	v2.51 - Fixed variable scope on the rltGetDescription dialog. Improper scope was causing the scripts to break on Max 4.2x.	
+	v2.5	- Added checking the bVCEnableReset to control whether max is reset after a check in.
+	v2.4	- Dead development tree, version number skipped.
 	v2.31 - Fixed the submit and reopen code so that files were reopened properly and any file that was "revert unchanged" was re-checked out if the user
 				selects the re-open option.
 	v2.3  - Changed from using the persistent global variables to using P4 fstat to check if the file exists.
-			Now ghosts any menu commands that are not proper after this script has finished. 
-	v2.2 - Changed all VCSubmitAndReOpen() function calls to VCSubmit() function calls.
-			Removed the local aMaxVersion array. The script now uses the global version of that array.
-	v2.1 - Added a section to switch the menu ghost variables to false when the file is added.
-			Removed the Max4/Max5 codepaths for bitmap discovery. Max 5's function doesn't work as well as my code.
-	v2.0 - Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the CheckIn to the user.
-			Removed the two included library files. All functions are now made global when those two files are loaded at startup.
-			(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been checked in.
-			(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
-			do the same thing. That code is still used if the scripts are run on Max 4.
-	v1.91 - Changed variable names to follow the programming guidelines.
-	v1.9 - Changed name from "SaveToSourceControl" to "CheckIn". All "Source Control" and "SC" references changed to "Version Control
-	       and "VC".  Changed function call "ConvertArray" to "ConvertArrayDOS2Unix" to reflect the change made in LSUtilLib
-	v1.8 - Copyright information added.
-	v1.7 - Changed from reading strStartMapsFile and strMaxFileToEdit from FileProperties to using the persistent global variables,
-	       "pg_strMaxFilepath" and, "pg_strMapsFilePath". Moved, "bExit" and, "aNewPathnames" from global to local variables.
-	v1.6 - Changed the function call "ConvertArrays" to "ConvertArray" to reflect the change made in LSUtilLb.
-	v1.5 - Fixed a bug that prevented the script from completing if the user answered "yes" to, the "Would you like to reopen..." dialog.
-	v1.4 - Initial release.
+				Now ghosts any menu commands that are not proper after this script has finished. 
+	v2.2	- Changed all VCSubmitAndReOpen() function calls to VCSubmit() function calls.
+				Removed the local aMaxVersion array. The script now uses the global version of that array.
+	v2.1 	- Added a section to switch the menu ghost variables to false when the file is added.
+				Removed the Max4/Max5 codepaths for bitmap discovery. Max 5's function doesn't work as well as my code.
+	v2.0	- Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the CheckIn to the user.
+				Removed the two included library files. All functions are now made global when those two files are loaded at startup.
+				(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been checked in.
+				(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
+				do the same thing. That code is still used if the scripts are run on Max 4.
+	v1.91	- Changed variable names to follow the programming guidelines.
+	v1.9	- Changed name from "SaveToSourceControl" to "CheckIn". All "Source Control" and "SC" references changed to "Version Control
+				and "VC".  Changed function call "ConvertArray" to "LSUtilLib.ConvertArrayDOS2Unix" to reflect the change made in LSUtilLib
+	v1.8	- Copyright information added.
+	v1.7	- Changed from reading strStartMapsFile and strMaxFileToEdit from FileProperties to using the persistent global variables,
+				"pg_strMaxFilepath" and, "pg_strMapsFilePath". Moved, "bExit" and, "aNewPathnames" from global to local variables.
+	v1.6	- Changed the function call "ConvertArrays" to "ConvertArray" to reflect the change made in LSUtilLb.
+	v1.5	- Fixed a bug that prevented the script from completing if the user answered "yes" to, the "Would you like to reopen..." dialog.
+	v1.4	- Initial release.
 
 
 Revert.ms
-	v2.5 - If bVCEditTextures is enabled (e.g. textures checked out) Revert will know to revert them also.
-	
-	v2.4 - Dead development tree, version number skipped.
-	v2.3 - Changed file check to use VCGetFileStats() instead of relying on the temp files on the harddisk.
-	v2.2 - Converted back to my bitmap finding functions for all max versions. The new functions in Max5 aren't as robust.
-	v2.1 - Added a section to switch the menu ghost variables to flase when the file is added.	
-	v2.0 - Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the Revert to the user.
-			Removed the two included library files. All functions are now made global when those two files are loaded at startup.
-	v1.51 - Updated variable names to follow programming guidelines.
-	v1.5 - Added confirmation dialog to the script.
-	v1.4 - Changed name from "RevertScene" to "Revert". Changed function names to reflect overal package renaming from "Source Control" to "Version Control".
-	v1.3 - Copyright Information added.
-	v1.2 - Resetting the peristent global variables, "pg_strMaxFilepath" and, "pg_strMapsFilepath" at the end of the script.
-	v1.1 - Initial release.
+	v2.52	- Updated so the VC* calls to global functions are now VersionControlLib.VC* calls
+				as that library has properly been made a struct with local functions.
+				Brought version number in line with the other tools in this package.
+				
+	v2.5	- If bVCEditTextures is enabled (e.g. textures checked out) Revert will know to revert them also.	
+	v2.4	- Dead development tree, version number skipped.
+	v2.3	- Changed file check to use VCGetFileStats() instead of relying on the temp files on the harddisk.
+	v2.2	- Converted back to my bitmap finding functions for all max versions. The new functions in Max5 aren't as robust.
+	v2.1	- Added a section to switch the menu ghost variables to flase when the file is added.	
+	v2.0	- Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the Revert to the user.
+				Removed the two included library files. All functions are now made global when those two files are loaded at startup.
+	v1.51	- Updated variable names to follow programming guidelines.
+	v1.5	- Added confirmation dialog to the script.
+	v1.4	- Changed name from "RevertScene" to "Revert". Changed function names to reflect overal package renaming from "Source Control" to "Version Control".
+	v1.3	- Copyright Information added.
+	v1.2	- Resetting the peristent global variables, "pg_strMaxFilepath" and, "pg_strMapsFilepath" at the end of the script.
+	v1.1	- Initial release.
 
 
 View.ms
-	v2.5 - Fixed a bug with regards to VCSync() being passed an incorrect number of parameters.
-	
-	v2.4 - Dead development tree, version number skipped.
-	v2.3 - Reworked to use P4 fstat to check status of a file. This is much more fault tolerant than the old "temp file on hard disk" setup.
-	v2.2 -Renamed all VCSyncAndCheckOut() functions to VCSync() to relfect the update in VersionControlLib.ms
-			Removed the local aMaxVersion array. The script now uses the global version of that array.
-	v2.1 - Changed back from seperate Max R4/R5 bitmap discovery code paths to a unified code path. Max R5's usedMaps()
-			function isn't as thorough as mine.
-	v2.0 - Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the View to the user.
-			Removed the two included library files. All functions are now made global when those two files are loaded at startup.
-			(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been loaded.
-			(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
-			do the same thing. That code is still used if the scripts are run on Max 4.
-	v1.41 - Changed the variable names to follow the programming guidelines.
-	v1.4 - Changed name from "ViewFromSourceControl" to "View". All "Source Control" and "SC" references changed to "Version Control and "VC"
-	v1.3 - Copyright information added.
-	v1.2 - Initial release.
+	v2.52	- Updated so the VC* calls to global functions are now VersionControlLib.VC* calls
+				as that library has properly been made a struct with local functions.
+				Brought version number in line with the other tools in this package.
+				
+	v2.5	- Fixed a bug with regards to VCSync() being passed an incorrect number of parameters.	
+	v2.4	- Dead development tree, version number skipped.
+	v2.3	- Reworked to use P4 fstat to check status of a file. This is much more fault tolerant than the old "temp file on hard disk" setup.
+	v2.2	- Renamed all VCSyncAndCheckOut() functions to VCSync() to relfect the update in VersionControlLib.ms
+				Removed the local aMaxVersion array. The script now uses the global version of that array.
+	v2.1	- Changed back from seperate Max R4/R5 bitmap discovery code paths to a unified code path. Max R5's usedMaps()
+				function isn't as thorough as mine.
+	v2.0	- Utilized the VCParseCommandResults & VCWriteCommandResults functions in VersionControlLib.ms to display results of the View to the user.
+				Removed the two included library files. All functions are now made global when those two files are loaded at startup.
+				(Max 5 only) Changes the title bar to show the status of the file in Version Control after it has been loaded.
+				(Max 5 only) Uses the new usedMaps() command to find all bitmaps. This replaces the node-tree walking code I wrote to
+				do the same thing. That code is still used if the scripts are run on Max 4.
+	v1.41	- Changed the variable names to follow the programming guidelines.
+	v1.4	- Changed name from "ViewFromSourceControl" to "View". All "Source Control" and "SC" references changed to "Version Control and "VC"
+	v1.3	- Copyright information added.
+	v1.2	- Initial release.
 
 
 VersionControlLib.ms
-	v2.5 - Added the bVCEnableReset and bVCEditTextures global variables. Changed the postFileOpen callback function to use those variables.
+	v2.52 - Changed this from a collection of global variables and functions to a proper library struct/namespace with private members and public members.
 	
-	v2.4 - Dead development tree, version number skipped.
-	v2.32 - Fixed a typo bug in VCSubmit that was preventing the reopen option from working.
-	v2.31 - Fixed a bug in the code initialization code.
-	v2.3 - Added the VCMenuDefault function and callback mechanism. This sets the VC menu items back to their default ghost/unghost states after a Max reset.
-			Removed all dependencies on the stored disk files and persistent global variables for sanity checking what was checked out. P4 fstat is now used for that.
-			Added the VCGetClientInfo() function. The scripts are now cognizent of the user defined in the client spec. If no user name is found it
-			is assumed that either the client spec is invalid or Perforce is not installed. In that instance the user will be alerted to the fact that no client spec exists, 
-			the #PostFileOpen callback script will be disabled and	version control menu entries will be ghosted.
-			Added the bEnableAddNew and bEnableView global variables so that menu ghosting can be controlled.			
-	v2.2 - Depreciated VCSubmitAndReopen(). VCSubmit() now handles a reopen condition based on the bReOpen input boolean variable.
-			Renamed VCSyncAndCheckOut() to VCSync(), since it is generally a sync function with the check-out being conditionally controlled.
-			Made aMaxVersion a global array since so many scripts in this package are using it.
-	v2.1 - Depricated VCSync(). Made VCSyncAndCheckOut() do an optional check out instead.
-			The codepaths were so similar it makes it easier to maintain this way.
-		   Rewrote VCSyncAndOpen() to respect the user's wishes on working on a version < the lastest.
-		   Added the bEnableCheckIn and bEnableRevert global variables so that menu ghosting can be controlled.
-		   Added a section to the VCOpenFileCheck() function to switch the variables to true when the file is loaded.
-		   Added a check to the VCOpenFileCheck() callback function so that it would not try to check the maxstart.max file.
-			This allows users to set up default max UI layouts without getting a Version Control error when they load.
-		   Changed code paths in VCOpenFileCheck(). Removed the seperate code paths for bitmap finding. Max 5's "usedMaps()"
-		    function does not operate as well as my functions (e.g. It misses some maps). I've gone back to just using
-		    my functions.
-	v2.0 - Renamed to LSVersionControlLib.ms
-			Added the VCParseCommandResults & VCWriteCommandResults functions. This allows for Perforce to report back what tasks it has accomplished.
-			Added VCOpenFileCheck. This callback function checks all opened max files to see if they are in version control.
-			Changed lib to load into memory at startup and made all functions global.
-			Added VCCleanup function. This deletes all necessary temp files on the HD and displays the command result.
-	v1.91 - Changed all global string variables to local string variables. Renamed variabled prefixes to match coding guidelines.
-	v1.9 - Changed all instances of "SC" to "VC" to reflect the renaming of the package to "Version Control"
-	v1.8 - SCAdd function adds binary files in exclusive mode now. Exclusive mode files can only be checked out by one person at a time.
-	v1.7 - Added SCGetFileStats function to prevent file from being checked out twice.
-	v1.6 - Copyright information added.
-	v1.5 - Initial release.
+	v2.51 - Fixed variable scope on the queryAllBox dialog. Improper scope was causing the scripts to break on Max 4.2x.	
+	v2.5	- Added the bVCEnableReset and bVCEditTextures global variables. Changed the postFileOpen callback function to use those variables.
+	v2.4	- Dead development tree, version number skipped.
+	v2.32	- Fixed a typo bug in VCSubmit that was preventing the reopen option from working.
+	v2.31	- Fixed a bug in the code initialization code.
+	v2.3	- Added the VCMenuDefault function and callback mechanism. This sets the VC menu items back to their default ghost/unghost states after a Max reset.
+				Removed all dependencies on the stored disk files and persistent global variables for sanity checking what was checked out. P4 fstat is now used for that.
+				Added the VCGetClientInfo() function. The scripts are now cognizent of the user defined in the client spec. If no user name is found it
+				is assumed that either the client spec is invalid or Perforce is not installed. In that instance the user will be alerted to the fact that no client spec exists, 
+				the #PostFileOpen callback script will be disabled and	version control menu entries will be ghosted.
+				Added the bEnableAddNew and bEnableView global variables so that menu ghosting can be controlled.			
+	v2.2	- Depreciated VCSubmitAndReopen(). VCSubmit() now handles a reopen condition based on the bReOpen input boolean variable.
+				Renamed VCSyncAndCheckOut() to VCSync(), since it is generally a sync function with the check-out being conditionally controlled.
+				Made aMaxVersion a global array since so many scripts in this package are using it.
+	v2.1	- Depricated VCSync(). Made VCSyncAndCheckOut() do an optional check out instead.
+				The codepaths were so similar it makes it easier to maintain this way.
+				Rewrote VCSyncAndOpen() to respect the user's wishes on working on a version < the lastest.
+				Added the bEnableCheckIn and bEnableRevert global variables so that menu ghosting can be controlled.
+				Added a section to the VCOpenFileCheck() function to switch the variables to true when the file is loaded.
+				Added a check to the VCOpenFileCheck() callback function so that it would not try to check the maxstart.max file.
+				This allows users to set up default max UI layouts without getting a Version Control error when they load.
+				Changed code paths in VCOpenFileCheck(). Removed the seperate code paths for bitmap finding. Max 5's "usedMaps()"
+				function does not operate as well as my functions (e.g. It misses some maps). I've gone back to just using
+				my functions.
+	v2.0	- Renamed to LSVersionControlLib.ms
+				Added the VCParseCommandResults & VCWriteCommandResults functions. This allows for Perforce to report back what tasks it has accomplished.
+				Added VCOpenFileCheck. This callback function checks all opened max files to see if they are in version control.
+				Changed lib to load into memory at startup and made all functions global.
+				Added VCCleanup function. This deletes all necessary temp files on the HD and displays the command result.
+	v1.91	- Changed all global string variables to local string variables. Renamed variabled prefixes to match coding guidelines.
+	v1.9	- Changed all instances of "SC" to "VC" to reflect the renaming of the package to "Version Control"
+	v1.8	- SCAdd function adds binary files in exclusive mode now. Exclusive mode files can only be checked out by one person at a time.
+	v1.7	- Added SCGetFileStats function to prevent file from being checked out twice.
+	v1.6	- Copyright information added.
+	v1.5	- Initial release.

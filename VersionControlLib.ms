@@ -1,11 +1,11 @@
 /*
 	VersionControlLib.ms
-	Version: 2.51
+	Version: 2.52
 	Created On: December 01, 2002
 	Created By: Jeff Hanna
-	Modified On: August 28, 2003 
+	Modified On: January 03, 2018
 	Modified By: Jeff Hanna
-	Tested using Max 5.1 (SP1)
+	Tested using 3ds Max 2016
 
 	© Copyright 2003, Lodestone Games, LLC. All Rights Reserved.
 
@@ -14,98 +14,77 @@
 	will occur.
 
 
-	v2.51 - Fixed variable scope on the queryAllBox dialog. Improper scope was causing the scripts to break on Max 4.2x.
+	v2.52 - Changed this from a collection of global variables and functions to a proper library struct/namespace with private members and public members.
 	
-	v2.5 - Added the bVCEnableReset and bVCEditTextures global variables. Changed the postFileOpen callback function to use those variables.
-	v2.4 - Dead development tree, version number skipped.
-	v2.32 - Fixed a typo bug in VCSubmit that was preventing the reopen option from working.
-	v2.31 - Fixed a bug in the code initialization code.
-	v2.3 - Added the VCMenuDefault function and callback mechanism. This sets the VC menu items back to their default ghost/unghost states after a Max reset.
-			Removed all dependencies on the stored disk files and persistent global variables for sanity checking what was checked out. P4 fstat is now used for that.
-			Added the VCGetClientInfo() function. The scripts are now cognizent of the user defined in the client spec. If no user name is found it
-			is assumed that either the client spec is invalid or Perforce is not installed. In that instance the user will be alerted to the fact that no client spec exists, 
-			the #PostFileOpen callback script will be disabled and	version control menu entries will be ghosted.
-			Added the bEnableAddNew and bEnableView global variables so that menu ghosting can be controlled.			
-	v2.2 - Depreciated VCSubmitAndReopen(). VCSubmit() now handles a reopen condition based on the bReOpen input boolean variable.
-			Renamed VCSyncAndCheckOut() to VCSync(), since it is generally a sync function with the check-out being conditionally controlled.
-			Made aMaxVersion a global array since so many scripts in this package are using it.
-	v2.1 - Depricated VCSync(). Made VCSyncAndCheckOut() do an optional check out instead.
-			The codepaths were so similar it makes it easier to maintain this way.
-		   Rewrote VCSyncAndOpen() to respect the user's wishes on working on a version < the lastest.
-		   Added the bEnableCheckIn and bEnableRevert global variables so that menu ghosting can be controlled.
-		   Added a section to the VCOpenFileCheck() function to switch the variables to true when the file is loaded.
-		   Added a check to the VCOpenFileCheck() callback function so that it would not try to check the maxstart.max file.
-			This allows users to set up default max UI layouts without getting a Version Control error when they load.
-		   Changed code paths in VCOpenFileCheck(). Removed the seperate code paths for bitmap finding. Max 5's "usedMaps()"
-		    function does not operate as well as my functions (e.g. It misses some maps). I've gone back to just using
-		    my functions.
-	v2.0 - Renamed to LSVersionControlLib.ms
-			Added the VCParseCommandResults & VCWriteCommandResults functions. This allows for Perforce to report back what tasks it has accomplished.
-			Added VCOpenFileCheck. This callback function checks all opened max files to see if they are in version control.
-			Changed lib to load into memory at startup and made all functions global.
-			Added VCCleanup function. This deletes all necessary temp files on the HD and displays the command result.
-	v1.91 - Changed all global string variables to local string variables. Renamed variabled prefixes to match coding guidelines.
-	v1.9 - Changed all instances of "SC" to "VC" to reflect the renaming of the package to "Version Control"
-	v1.8 - SCAdd function adds binary files in exclusive mode now. Exclusive mode files can only be checked out by one person at a time.
-	v1.7 - Added SCGetFileStats function to prevent file from being checked out twice.
-	v1.6 - Copyright information added.
-	v1.5 - Initial release.
+	v2.51 - Fixed variable scope on the queryAllBox dialog. Improper scope was causing the scripts to break on Max 4.2x.	
+	v2.5	- Added the bVCEnableReset and bVCEditTextures global variables. Changed the postFileOpen callback function to use those variables.
+	v2.4	- Dead development tree, version number skipped.
+	v2.32	- Fixed a typo bug in VCSubmit that was preventing the reopen option from working.
+	v2.31	- Fixed a bug in the code initialization code.
+	v2.3	- Added the VCMenuDefault function and callback mechanism. This sets the VC menu items back to their default ghost/unghost states after a Max reset.
+				Removed all dependencies on the stored disk files and persistent global variables for sanity checking what was checked out. P4 fstat is now used for that.
+				Added the VCGetClientInfo() function. The scripts are now cognizent of the user defined in the client spec. If no user name is found it
+				is assumed that either the client spec is invalid or Perforce is not installed. In that instance the user will be alerted to the fact that no client spec exists, 
+				the #PostFileOpen callback script will be disabled and	version control menu entries will be ghosted.
+				Added the bEnableAddNew and bEnableView global variables so that menu ghosting can be controlled.			
+	v2.2	- Depreciated VCSubmitAndReopen(). VCSubmit() now handles a reopen condition based on the bReOpen input boolean variable.
+				Renamed VCSyncAndCheckOut() to VCSync(), since it is generally a sync function with the check-out being conditionally controlled.
+				Made aMaxVersion a global array since so many scripts in this package are using it.
+	v2.1	- Depricated VCSync(). Made VCSyncAndCheckOut() do an optional check out instead.
+				The codepaths were so similar it makes it easier to maintain this way.
+				Rewrote VCSyncAndOpen() to respect the user's wishes on working on a version < the lastest.
+				Added the bEnableCheckIn and bEnableRevert global variables so that menu ghosting can be controlled.
+				Added a section to the VCOpenFileCheck() function to switch the variables to true when the file is loaded.
+				Added a check to the VCOpenFileCheck() callback function so that it would not try to check the maxstart.max file.
+				This allows users to set up default max UI layouts without getting a Version Control error when they load.
+				Changed code paths in VCOpenFileCheck(). Removed the seperate code paths for bitmap finding. Max 5's "usedMaps()"
+				function does not operate as well as my functions (e.g. It misses some maps). I've gone back to just using
+				my functions.
+	v2.0	- Renamed to LSVersionControlLib.ms
+				Added the VCParseCommandResults & VCWriteCommandResults functions. This allows for Perforce to report back what tasks it has accomplished.
+				Added VCOpenFileCheck. This callback function checks all opened max files to see if they are in version control.
+				Changed lib to load into memory at startup and made all functions global.
+				Added VCCleanup function. This deletes all necessary temp files on the HD and displays the command result.
+	v1.91	- Changed all global string variables to local string variables. Renamed variabled prefixes to match coding guidelines.
+	v1.9	- Changed all instances of "SC" to "VC" to reflect the renaming of the package to "Version Control"
+	v1.8	- SCAdd function adds binary files in exclusive mode now. Exclusive mode files can only be checked out by one person at a time.
+	v1.7	- Added SCGetFileStats function to prevent file from being checked out twice.
+	v1.6	- Copyright information added.
+	v1.5	- Initial release.
 */
 
+struct VersionControlLib_Base
 (
-	--LOCAL VARIABLES
-	-----------------
-	local strVersion = "2.51" as string
+	private	
+	-------
+	strVersion = "2.52",
 
-	local strAddFile = "$temp\\AddFiles.txt" as string
-	local strRevertFile = "$temp\\RevertFiles.txt" as string
-	local strSubmitFile = "$temp\\SubmitFiles.txt" as string
-	local strOpenedFiles = "$temp\\OpenedFiles.txt" as string
-	local strStartMapsFile = "" as string
-	local bExists = false
-	aAllMaps = #()
-	aOtherMaps = #()
-	aStartMapPathnames = #()
-	aMaxFile = #()
-
-
-	--GLOBAL VARIABLES
-	------------------
-	global bPerformOpenFileCheck = true				-- Boolean to indicate if a file opened with Max's File\Open command should be checked
-																	--  to see if it is under version control
-	global strCommandResults = "" as stringStream	-- Global stringStream to hold the results of the last executed VC command.
-	global bVCShowResults = false						-- Global boolean to tell if the results of the last VC command should be shown or not.
-	global bVCEnableReset = true							-- Global boolean to track whether the scene should be reset after a checkin or add new.
-	global bVCEditTextures = false						-- Global boolean to track whether textures should be opened for edit or not.
-	global bEnableCheckIn = false						-- Global boolean variable to tell if the Check In command should be ghosted or not.
-	global bEnableRevert = false							-- Global boolean variable to tell if the Revert command should be ghosted or not.
-	global bEnableAddNew = true							-- Global boolean variable to tell if the Add new command should be ghosted or not.
-	global bEnableView = true								-- Global boolean variable to tell if the View command should be ghosted or not.
-	global strChangeDescription = "" as string			-- Global string variable to hold change descriptions.
-	global strUserName = "" as string					-- Global string variable to hold the user's name.
-	
-	global aMaxVersion = maxVersion()
-	
-	global queryAllBox
+	strAddFile = "$temp\\AddFiles.txt",
+	strRevertFile = "$temp\\RevertFiles.txt",
+	strSubmitFile = "$temp\\SubmitFiles.txt",
+	strOpenedFiles = "$temp\\OpenedFiles.txt",
+	strStartMapsFile = "",
+	bExists = false,
+	aAllMaps = #(),
+	aOtherMaps = #(),
+	aStartMapPathnames = #(),
+	aMaxFile = #(),
 
 
-	--GLOBAL FUNCTIONS
-	------------------
-	global VCOpenFileCheck
-	global VCMenuDefault
-	global VCWriteSubmitTemplate
-	global VCParseCommandResults
-	global VCWriteCommandResults
-	global VCGetFileStats
-	global VCFstatExists
-	global VCGetClientInfo
-	global VCSync
-	global VCAdd
-	global VCRevertUnchanged
-	global VCRevertAll
-	global VCSubmit
-	global VCGetOpenedFiles
-	global VCCleanUp
+	public
+	------
+	bPerformOpenFileCheck = true,					-- Boolean to indicate if a file opened with Max's File\Open command should be checked
+											 				--  to see if it is under version control
+	strCommandResults = "" as stringStream,	-- StringStream to hold the results of the last executed VC command.
+	bVCShowResults = false,							-- Boolean to tell if the results of the last VC command should be shown or not.
+	bVCEnableReset = true,							-- Boolean to track whether the scene should be reset after a checkin or add new.
+	bVCEditTextures = false,						-- Boolean to track whether textures should be opened for edit or not.
+	bEnableCheckIn = false,							-- Boolean variable to tell if the Check In command should be ghosted or not.
+	bEnableRevert = false,							-- Boolean variable to tell if the Revert command should be ghosted or not.
+	bEnableAddNew = true,							-- Boolean variable to tell if the Add new command should be ghosted or not.
+	bEnableView = true,								-- Boolean variable to tell if the View command should be ghosted or not.
+	strChangeDescription = "",						-- String variable to hold change descriptions.
+	strUserName = "",									-- String variable to hold the user's name.
 
 
 	--TEXT FILE FUNCTIONS
@@ -126,7 +105,7 @@
 			format "\t%\n" i to:FileOut
 		)
 		close FileOut
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Read in the piped output from the VC system and store it in the global strCommandResults stringstream.
@@ -146,7 +125,7 @@
 			)
 			close ResultsFile
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Write the value of the global stringStream strCommandResults to a disk file for possible later reference.
@@ -171,7 +150,7 @@
 			strCommandResults = "" as stringStream
 		)
 		catch()
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 
@@ -206,7 +185,7 @@
 			)
 		)
 		close f
-	)	
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	--
@@ -223,7 +202,7 @@
 			return false
 		)
 		close f
-	)	
+	),	
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Finds the user name of the local Perforce client.
@@ -239,7 +218,7 @@
 			return strName
 			close f
 		)
-	)	
+	),	
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	-- Pass a list of requested files to the source control system so they can be sync'd to their latest versions and opened for edit.
@@ -410,50 +389,50 @@
 		-- If there are any files to sync, sync them.
 		if aFilesToSync.count >= 1 then
 		(
-			WriteFile aFilesToSync "$temp\\TempSync.txt" --strTextFile
-			strDOSEditFile = DOSTempPath "$temp\\TempSync.txt" 1 5
+			LSUtilLib.WriteFile aFilesToSync "$temp\\TempSync.txt" --strTextFile
+			strDOSEditFile = LSUtilLib.DOSTempPath "$temp\\TempSync.txt" 1 5
 			HiddenDOSCommand ("p4 -x " + strDOSEditFile + " sync > \"" + (getDir #temp) + "\\VCSync.txt\"")
 		)
 
 		if bCheckOut == true then
 		(
-			WriteFile aFilesToCheck "$temp\\TempSync.txt" --strTextFile
-			strDOSEditFile = DOSTempPath "$temp\\TempSync.txt" 1 5
+			LSUtilLib.WriteFile aFilesToCheck "$temp\\TempSync.txt" --strTextFile
+			strDOSEditFile = LSUtilLib.DOSTempPath "$temp\\TempSync.txt" 1 5
 			HiddenDOSCommand ("p4 -x " + strDOSEditFile + " edit > \"" + (getDir #temp) + "\\VCEdit.txt\"")
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Pass a list of new files to the source control system so they can be added.
 	fn VCAdd aFilesToAdd =
 	(
-		WriteFile aFilesToAdd strAddFile
+		LSUtilLib.WriteFile aFilesToAdd strAddFile
 
-		strDOSAddFile = DOSTempPath strAddFile 1 5
+		strDOSAddFile = LSUtilLib.DOSTempPath strAddFile 1 5
 		HiddenDOSCommand ("P4 -x " + strDOSAddFile + " add -t binary+l > \"" + (getDir #temp) + "\\VCAdd.txt\"")
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Pass a list of unchanged files to the source control system so they can be reverted. Best used at the end of an editing
 	-- session before a submit happens.
 	fn VCRevertUnchanged aFilesToRevert =
 	(
-		WriteFile aFilesToRevert strRevertFile
+		LSUtilLib.WriteFile aFilesToRevert strRevertFile
 
-		strDOSRevertFile = DOSTempPath strRevertFile 1 5
+		strDOSRevertFile = LSUtilLib.DOSTempPath strRevertFile 1 5
 		HiddenDOSCommand ("P4 -x " + strDOSRevertFile + " revert -a > \"" + (getdir #temp) + "\\VCRevert.txt\"")
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Discard all changes and revert all opened files to their latest version.
 	fn VCRevertAll aFilesToRevert =
 	(
-		WriteFile aFilesToRevert strRevertFile
+		LSUtilLib.WriteFile aFilesToRevert strRevertFile
 
-		strDOSRevertFile = DOSTempPath strRevertFile 1 5
+		strDOSRevertFile = LSUtilLib.DOSTempPath strRevertFile 1 5
 
 		HiddenDOSCommand ("P4 -x " + strDOSRevertFile + " revert > \"" + (getDir #temp) + "\\VCRevert.txt\"")
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Pass a list of opened and changed files to the source control system so the changes can be submitted.
@@ -461,7 +440,7 @@
 	(
 		VCWriteSubmitTemplate aFilesToSubmit strSubmitFile
 
-		strDOSSubmitFile = DOSTempPath strSubmitFile 1 5
+		strDOSSubmitFile = LSUtilLib.DOSTempPath strSubmitFile 1 5
 		
 		if bAndReOpen == true then
 		(
@@ -471,7 +450,7 @@
 		(
 			HiddenDOSCommand ("type " + strDOSSubmitFile + " | p4 submit -i > \"" + (getDir #temp) + "\\VCSubmit.txt\"")
 		)
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- A list of the remaining opened files needs to be gathered so that the program knows what to submit.
@@ -502,7 +481,7 @@
 		close f
 		deleteFile "$temp\\OpenedFiles.txt"
 		return aReturnArray
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	fn VCCleanUp =
@@ -521,7 +500,7 @@
 		deleteFile "$temp\\VCClientInfo.txt"
 		deleteFile "$temp\\TempSync.txt"
 		deleteFile "$temp\\VCSyncCheck.txt"
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 
@@ -575,15 +554,12 @@
 	
 						-- Traverse the node tree in the scene and gather all maps used.
 						-- Find both maps assigned to materials and those that aren't.
-					 	aAllMaps = GetSceneMaps()
-					 	aOtherMaps = GetOtherMaps()
+					 	aAllMaps = LSUtilLib.GetSceneMaps()
+					 	aOtherMaps = LSUtilLib.GetOtherMaps()
 					  	aAllMaps = aAllMaps + aOtherMaps
 	
 						-- Get the bitmap names and file paths from the list of maps you just made.
-						aStartMapPathnames = GetBitmapsFromMaps aAllMaps
-	
-						-- Remove any duplicate entries.
-						RemoveDuplicates aStartMapPathnames
+						aStartMapPathnames = LSUtilLib.GetBitmapsFromMaps aAllMaps
 	
 						-- Now sync to the latest version and check out those files files from source control
 						VCSync aStartMapPathnames bVCEditTextures
@@ -701,7 +677,7 @@
 		enableSceneRedraw()
 		forceCompleteRedraw()
 		bPerformOpenFileCheck = true
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 
 	-- Reset the global variables that control whether the version control menu items are ghosted or not.
@@ -711,47 +687,52 @@
 		global bEnableRevert = false
 		global bEnableAddNew = true
 		global bEnableView = true
-	)
+	),
 	-------------------------------------------------------------------------------------------------------------------------
 	
 	
 	
-	--MAIN LOOP
+	--Init
 	-------------
-	-- Get the local user info and/or alert the user that this machine has no client spec.
-	strUserName = VCGetClientInfo()
-	
-	-- If there is a user name then the machine as a valid Perforce client spec. Initialize the version control routines
-	if strUserName != undefined then
+	fn init = 
 	(
-		-- Print version information to the listener. Useful if a bug-report needs to be sent.
-		format "VersionControlLib.ms, v% loaded.\n" strVersion to:Listener
-		print "Test"
-	
-		-- Read the user stored setting for whether the command results should be displayed or not.
-		case of
-		(
-			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "true"): bVCShowResults = true
-			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "false"): bVCShowResults = false
-			(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == ""): bVCShowResults = true
-		)
-	
-		-- Remove the LastCommand file since this is a new Max session
-		deleteFile "$temp\\LastCommand.txt"	
+		-- Get the local user info and/or alert the user that this machine has no client spec.
+		strUserName = VCGetClientInfo()
 		
-		-- Register the callback functions so they will be used at every file open and reset
-		callbacks.addScript #filePostOpen "VCOpenFileCheck()" id:#VersionControl
-		callbacks.addScript #systemPostReset "VCMenuDefault()" id:#VersionControl
-	)
-	
-	-- If there is no user name then assume there is no valid client spec and/or Perforce isn't installed. Alert the user and
-	-- do not initialize the version control scripts.
-	else
-	(
-		bEnableAddNew = false
-		bEnableCheckIn = false
-		bEnableRevert = false
-		bEnableView = false
-		messagebox "Either Perforce is not installed or there is no client spec defined on this machine.\n\nWork can not be stored in version control without a local client spec.\nPlease insure that you have Perforce installed properly and a client spec defined.\n\nThe version control system will not be initialized." title:"VersionControl" beep:false
+		-- If there is a user name then the machine as a valid Perforce client spec. Initialize the version control routines
+		if strUserName != undefined then
+		(
+			-- Print version information to the listener. Useful if a bug-report needs to be sent.
+			format "VersionControlLib v% loaded.\n" strVersion to:Listener
+		
+			-- Read the user stored setting for whether the command results should be displayed or not.
+			case of
+			(
+				(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "true"): bVCShowResults = true
+				(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == "false"): bVCShowResults = false
+				(getINIsetting "$plugcfg\\VersionControl.ini" "Options" "Show Results" == ""): bVCShowResults = true
+			)
+		
+			-- Remove the LastCommand file since this is a new Max session
+			deleteFile "$temp\\LastCommand.txt"	
+			
+			-- Register the callback functions so they will be used at every file open and reset
+			callbacks.addScript #filePostOpen "VersionControlLib.VCOpenFileCheck()" id:#VersionControl
+			callbacks.addScript #systemPostReset "VersionControlLib.VCMenuDefault()" id:#VersionControl
+		)
+		
+		-- If there is no user name then assume there is no valid client spec and/or Perforce isn't installed. Alert the user and
+		-- do not initialize the version control scripts.
+		else
+		(
+			bEnableAddNew = false
+			bEnableCheckIn = false
+			bEnableRevert = false
+			bEnableView = false
+			messagebox "Either Perforce is not installed or there is no client spec defined on this machine.\n\nWork can not be stored in version control without a local client spec.\nPlease insure that you have Perforce installed properly and a client spec defined.\n\nThe version control system will not be initialized." title:"VersionControl" beep:false
+		)
 	)
 )
+
+VersionControlLib = VersionControlLib_Base()
+VersionControlLib.init()
