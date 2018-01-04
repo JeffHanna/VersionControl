@@ -69,7 +69,7 @@
 	deleteFile "$temp\\LastCommand.txt"
 
 	-- Print version information to the listener. Useful if a bug-report needs to be sent.
-	format "View v% loaded.\n" %strViewVersion to:Listener
+	format "View v% loaded.\n" strViewVersion to:Listener
 
 	-- Set this boolean so the #postFileOpen callback doesn't trigger the VCOpenFileCheck function
 	VersionControlLib.bPerformOpenFileCheck = false
@@ -106,7 +106,8 @@
 		aStartMapPathnames = LSUtilLib.GetBitmapsFromMaps aAllMaps
 	 	
 		-- Now sync to the latest version and check out those files files from source control
-		VersionControlLib.VCSync aStartMapPathnames strStartMapsFile false
+		VersionControlLib.VCSync aStartMapPathnames false
+		VersionControlLib.VCSync strStartMapsFile false
 
 		--Force a refresh of all maps in the scene so that any that were updated by the sync become visible.
 		freeSceneBitmaps()

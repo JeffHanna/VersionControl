@@ -12,11 +12,11 @@
 	
 	v1.51 - Renamed variables to match programming guidelines.
 				Removed the strStartMapsFile and strFileToOpen variables. They weren't used in this script.
-	v1.5	- Added the LSUtilLib.GeometryFilter and LSUtilLib.GetSelectionBoundingBox functions. 
+	v1.5	- Added the GeometryFilter and GetSelectionBoundingBox functions. 
 				Commented out the strStartMapsFile and strFileToOpen variable declarations. They are P4Lib.ms variables. Why are they being delcared here?
 	v1.4	- Reworked functions to standardized programming conventions.
-				Changed LSUtilLib.DOSTempPath function to take start and end character locations as input variables.
-	v1.3	- Added LSUtilLib.CompareFileDates function
+				Changed DOSTempPath function to take start and end character locations as input variables.
+	v1.3	- Added CompareFileDates function
 	v1.2	- Renamed the function "ConvertArrays" to "ConvertArray" since it only works on one array at a time.
 	v1.1	- Initial release.
 	
@@ -25,7 +25,6 @@
 struct LSUtilLib_Base
 (
 	strLSULVersion = "1.52",
-		
 		
 	-- Performs a simple alphabetic check on two file names. Returns a value indicating which one is 
 	-- closer to A in the alphabet (e.g. A_File.text is higher than File.text)
@@ -145,7 +144,7 @@ struct LSUtilLib_Base
 		
 		for i in aInput do
 		(
-			i = LSUtilLib.MakeRelativePath i
+			i = MakeRelativePath i
 			aPathPieces = filterString i "\\"
 			
 			local UnixPath = stringStream ""
@@ -193,18 +192,18 @@ struct LSUtilLib_Base
 		local aReturn = #()
 		aTempMap = #()
 		
-		aSceneMaterials = LSUtilLib.GetSceneMaterials()
+		aSceneMaterials = this.GetSceneMaterials()
 		
 		for i in aSceneMaterials do
 		(
 			aTempMaps = #()
 			
-			LSUtilLib.GetMapsFromMaterial i aTempMaps
+			this.GetMapsFromMaterial i aTempMaps
 			
 			join aReturn aTempMaps
 		)
 		
-		qSort aReturn LSUtilLib.NameCompare
+		qSort aReturn NameCompare
 		
 		return aReturn
 	),
@@ -220,7 +219,7 @@ struct LSUtilLib_Base
 		(
 			if i.material != undefined then
 			(
-				for i in (LSUtilLib.GetAllMaterials i.material) do
+				for i in (this.GetAllMaterials i.material) do
 				(
 					iIndex = findItem aReturn i
 					if iIndex == 0 then
@@ -231,7 +230,7 @@ struct LSUtilLib_Base
 			)
 		) 		
 		
-		qSort aReturn LSUtilLib.NameCompare
+		qSort aReturn NameCompare
 		
 		return aReturn
 	),
@@ -245,7 +244,7 @@ struct LSUtilLib_Base
 		
 		appendIfUnique aReturn InputMaterial
 		
-		LSUtilLib.GetSubMaterials InputMaterial aTempMaterials
+		this.GetSubMaterials InputMaterial aTempMaterials
 		
 		for i in aTempMaterials do
 		(
@@ -289,7 +288,7 @@ struct LSUtilLib_Base
 							)
 						)
 					)
-					LSUtilLib.GetSubMaterials InputMaterial[i] aInput
+					GetSubMaterials InputMaterial[i] aInput
 				)
 			)
 		)
@@ -315,7 +314,7 @@ struct LSUtilLib_Base
 							)
 						)
 					)
-					LSUtilLib.GetMapsFromMaterial InputMaterial[i] aInput
+					GetMapsFromMaterial InputMaterial[i] aInput
 				)
 			)
 		)

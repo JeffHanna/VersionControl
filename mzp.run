@@ -2,9 +2,6 @@ name "VersionControl"
 version 2.52
 
 
-run VCRemoveOldMenus.ms
-drop VCRemoveOldMenus.ms
-
 move Macro_VersionControl.mcr to $usermacros
 
 move CheckIn.ms to $userscripts\\Lodestone\\VersionControl
@@ -19,13 +16,9 @@ move LSUtilLib.ms to $userscripts\\Lodestone\\VersionControl\\libs
 
 move "*.bmp" to $usericons
 
-run $userscripts\\Lodestone\\VersionControl\\libs\\VersionControlLib.ms
-run $userscripts\\Lodestone\\VersionControl\\libs\\LSUtilLib.ms
-drop $userscripts\\Lodestone\\VersionControl\\libs\\VersionControlLib.ms
-drop $userscripts\\Lodestone\\VersionControl\\libs\\LSUtilLib.ms
-
-run VersionControl_Menus.ms
-drop VersionControl_Menus.ms
+move VersionControl_Menus.ms to $temp
+move VCChangelog.txt to $temp
+move VCReadme to $temp
 
 run InstallFinished.ms
 drop InstallFinished.ms

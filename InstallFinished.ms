@@ -1,18 +1,21 @@
 /*
 	InstallFinished.ms
-	Version: 0.1
+	Version: 0.2
 	Created On: February 18, 2003
 	Created By: Jeff Hanna
-	Modified On: April 02, 2003
+	Modified On: January 04, 2018
 	Modified By: Jeff Hanna
-	Tested using Max 4.26
+	Tested using 3ds Max 2016
 
 	© Copyright 2003 Lodestone Games, LLC. All Rights Reserved.
 
 
 	Cleans up left over install files and then informs the user that the install is finished.
 
-	v0.1 - First version.
+	v0.2	- Added the calling of the two utility libraries and the menu creation script to this script.
+				In newer versions of Max calling those files from the mzp.run installation control file didn't appear to work.
+	
+	v0.1  - First version.
 */
 
 
@@ -50,8 +53,13 @@
 		)
 	)
 	
+	fileIn ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs\\LSUtilLib.ms")
+	fileIn ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs\\VersionControlLib.ms")
 	setINISetting ((getDir #userscripts) + "\\..\\Plugin.UserSettings.ini") "Directories" "Lodestone plug-ins" ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs")
-	macros.load()
+	macros.load() -- ((getDir #usermacros) + "\\Macro_VersionControl.mcr")
+	
+	fileIn ((getDir #temp) + "\\VersionControl_Menus.ms")
+	deleteFile ((getDir #temp) + "\\VersionControl_Menus.ms")
 
 	createDialog rltFinished 312 112 modal:true
 )
