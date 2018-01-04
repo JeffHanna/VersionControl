@@ -16,9 +16,10 @@ move LSUtilLib.ms to $userscripts\\Lodestone\\VersionControl\\libs
 
 move "*.bmp" to $usericons
 
+move VCChangelog.txt to $userscripts\\Lodestone\\VersionControl
+move VCReadme.txt to $userscripts\\Lodestone\\VersionControl
+
 move VersionControl_Menus.ms to $temp
-move VCChangelog.txt to $temp
-move VCReadme to $temp
 
 run InstallFinished.ms
 drop InstallFinished.ms

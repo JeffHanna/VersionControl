@@ -38,12 +38,12 @@
 		(
 			if rltFinished.chkReadme.state == true then
 			(
-				DOSCommand "c:\\windows\\notepad.exe %temp%\\VCReadme.txt"
+				shellLaunch "notepad.exe" ((getDir #userscripts) + "\\Lodestone\\VersionControl\\VCChangelog.txt")
 			)
 
 			if rltFinished.chkChangelog.state == true then
 			(
-				DOSCommand "c:\\windows\\notepad.exe %temp%\\VCChangelog.txt"
+				shellLaunch "notepad.exe" ((getDir #userscripts) + "\\Lodestone\\VersionControl\\VCReadme.txt")
 			)
 
 			deleteFile "$temp\\VCReadme.txt"
@@ -56,7 +56,7 @@
 	fileIn ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs\\LSUtilLib.ms")
 	fileIn ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs\\VersionControlLib.ms")
 	setINISetting ((getDir #userscripts) + "\\..\\Plugin.UserSettings.ini") "Directories" "Lodestone plug-ins" ((getDir #userscripts) + "\\Lodestone\\VersionControl\\Libs")
-	macros.load() -- ((getDir #usermacros) + "\\Macro_VersionControl.mcr")
+	macros.load()
 	
 	fileIn ((getDir #temp) + "\\VersionControl_Menus.ms")
 	deleteFile ((getDir #temp) + "\\VersionControl_Menus.ms")
